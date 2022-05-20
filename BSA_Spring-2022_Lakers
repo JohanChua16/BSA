@@ -1,0 +1,130 @@
+library(ggplot2)
+setwd("~/Desktop/BSA Spring 2022 - LA Lakers")
+
+#GRAPH 1 - WIN PERCENTAGE
+season = c("2019-20", "2020-21", "2021-22")
+win_percentage = c(0.7323943662, 0.5833333333, 0.4024390244)
+wins = data.frame(season, win_percentage)
+
+ggplot(data = wins, aes(x = season, y = win_percentage, group = 1)) + 
+  geom_line() + geom_point() + xlab("Season") + ylab("Win Percentage") + 
+  ggtitle("LA Lakers' Win Percentages") + ylim(0,1)
+
+#GRAPH 2,3,4 - WESTBROOK
+
+westbrook = read.csv('westbrook.csv')
+points = westbrook[,c("Season", "PTS")]
+assists = westbrook[,c("Season", "AST")]
+
+ggplot(data = westbrook, aes(x = Season, y = PTS, group = 1, ylim(0,30))) +
+  geom_line(aes(color = "Points")) + geom_point(aes(color = "Points")) +
+  xlab("Season") + ylab("Points") + ggtitle("Westbrook Career Points")
+
+ggplot(data = westbrook, aes(x = Season, y = AST, group = 1, ylim(0,12))) +
+  geom_point(aes(x = Season, y = AST, group = 1, color = "Assists")) +
+  geom_line(aes(x = Season, y = AST, group = 1, color = "Assists")) + 
+  geom_point(aes(x = Season, y = TRB, group = 1, color = "Rebounds")) +
+  geom_line(aes(x = Season, y = TRB, group = 1, color = "Rebounds")) + 
+  geom_point(aes(x = Season, y = TOV, group = 1, color = "Turnovers")) +
+  geom_line(aes(x = Season, y = TOV, group = 1, color = "Turnovers")) +
+  xlab("Season") + ylab("") + ggtitle("Westbrook Career Assists, Rebounds, Turnovers")
+
+ggplot(data = westbrook, aes(x = Season, y = FG., group = 1, ylim(0,1))) +
+  geom_point(aes(x = Season, y = FG., group = 1, color = "Field Goal %")) +
+  geom_line(aes(x = Season, y = FG., group = 1, color = "Field Goal %")) + 
+  geom_point(aes(x = Season, y = X3P., group = 1, color = "3 Point %")) +
+  geom_line(aes(x = Season, y = X3P., group = 1, color = "3 Point %")) + 
+  geom_point(aes(x = Season, y = X2P., group = 1, color = "2 Point %")) +
+  geom_line(aes(x = Season, y = X2P., group = 1, color = "2 Point %")) +
+  geom_point(aes(x = Season, y = FT., group = 1, color = "Free Throw %")) +
+  geom_line(aes(x = Season, y = FT., group = 1, color = "Free Throw %")) +
+  xlab("Season") + ylab("Percentage") + ggtitle("Westbrook Career Percentages")
+
+#GRAPH 5, 6 DEFENSE SCATTERPLOTS
+season
+points_allowed = c(107.6, 109.5, 115.1)
+opp_fg = c(0.448, 0.47, 0.46)
+opp_3p = c(0.349, 0.352, 0.352)
+opp_2p = c(0.51, 0.548, 0.524)
+opp_points = data.frame(season, points_allowed)
+opp_percent = data.frame(season, opp_fg, opp_3p, opp_2p)
+
+ggplot(data = opp_points, aes(x = season, y = points_allowed, group = 1)) + 
+  geom_line() + geom_point() + xlab("Season") + ylab("Opponent Points Allowed") + 
+  ggtitle("LA Lakers' Opponent Points Allowed") + ylim(106,116)
+
+ggplot(data = opp_percent, aes(x = season, y = opp_fg, group = 1, ylim(0.3,0.6))) +
+  geom_point(aes(x = season, y = opp_fg, group = 1, color = "Opponent FG%")) +
+  geom_line(aes(x = season, y = opp_fg, group = 1, color = "Opponent FG%")) + 
+  geom_point(aes(x = season, y = opp_3p, group = 1, color = "Opponent 3P%")) +
+  geom_line(aes(x = season, y = opp_3p, group = 1, color = "Opponent 3P%")) + 
+  geom_point(aes(x = season, y = opp_2p, group = 1, color = "Opponent 2P%")) +
+  geom_line(aes(x = season, y = opp_2p, group = 1, color = "Opponent 2P%")) +
+  xlab("Season") + ylab("Percentage") + ggtitle("LA Lakers' Opponent Percentages")
+
+#GRAPH 5, 6 DEFENSE BOXPLOTS
+
+age_19_20 = c(35,34,34,34,33,32,32,30,29,28,28,26,26,26,25,24,23,22,22,19)
+age_20_21 = c(36,27,27,25,27,27,27,26,20,31,34,36,27,25,35,28,24,27,23)
+age_21_22 = c(37,28,33,23,37,32,21,23,25,31,23,36,34,34,24,36,35,32,23,33,34,23,21,26,23)
+boxplot(age_19_20, age_20_21, age_21_22, names = season, 
+        xlab = "Season", ylab = "Age", main = "Boxplot of LA Lakers Players' Ages")
+
+age_numbers = c(35,34,34,34,33,32,32,30,29,28,28,26,26,26,25,24,23,22,22,19, 
+       36,27,27,25,27,27,27,26,20,31,34,36,27,25,35,28,24,27,23, 
+       37,28,33,23,37,32,21,23,25,31,23,36,34,34,24,36,35,32,23,33,34,23,21,26,23)
+age_season = rep(c("2019-20", "2020-21", "2021-22"), times=c(20,19,25))
+ages = data.frame(age_season, age_numbers)
+
+ggplot(data = ages, mapping = aes(x = age_season, y = age_numbers)) + 
+  geom_boxplot() + coord_flip() +
+  labs(x = "Season", y = "Age") + ggtitle("Boxplot of LA Lakers Players' Ages") + 
+  scale_y_continuous(breaks = seq(15, 40, 1))
+
+height_19_20 = c(208.28, 190.5,200.66,195.58,	193.04 ,185.42	,193.04,	208.28,	
+                 198.12	,198.12,	193.04,	208.28	,205.74	,205.74	,213.36,	205.74,	
+                 195.58,	185.42	,198.12	,190.5)
+height_20_21 = c(208.28,	200.66	,195.58	,193.04	,185.42	,208.28,	208.28	,198.12	,
+                 185.421,	200.66	,193.04	,205.74,	185.421,	205.74,	193.04,	200.66,	
+                 190.5,	205.74	,190.5)
+height_21_22 = c(190.5,	190.5	,200.66,	190.5	,195.58	,193.04	,208.28,	205.74,	198.12,	
+                 193.04	,208.28	,193.04	,180.34	,205.74,	193.04,	187.96,	187.96)
+
+boxplot(height_19_20, height_20_21, height_21_22, names = season, 
+        xlab = "Season", ylab = "Height (cm)", main = "Boxplot of LA Lakers Players' Heights")
+
+length(height_19_20)
+length(height_20_21)
+length(height_21_22)
+height_numbers = c(height_19_20, height_20_21, height_21_22)
+height_season = rep(c("2019-20", "2020-21", "2021-22"), times=c(20,19,17))
+height = data.frame(height_season, height_numbers)
+
+ggplot(data = height, mapping = aes(x = height_season, y = height_numbers)) + 
+  geom_boxplot() + coord_flip() +
+  labs(x = "Season", y = "Height (cm)") + ggtitle("Boxplot of LA Lakers Players' Heights") + 
+  scale_y_continuous(breaks = seq(180, 220, 2))
+
+#GRAPH 7, 8 OFFENSE
+season
+points_scored = c(113.4, 109.5, 112.1)
+team_fg = c(0.480, 0.472, 0.469)
+team_3p = c(0.349, 0.354, 0.347)
+team_2p = c(0.552, 0.539, 0.546)
+team_points = data.frame(season, points_scored)
+team_percent = data.frame(season, team_fg, team_3p, team_2p)
+
+ggplot(data = opp_points, aes(x = season, y = points_scored, group = 1)) + 
+  geom_line() + geom_point() + xlab("Season") + ylab("Points Scored") + 
+  ggtitle("LA Lakers' Points Scored") + ylim(106,116)
+
+ggplot(data = team_percent, aes(x = season, y = team_fg, group = 1, ylim(0.3,0.6))) +
+  geom_point(aes(x = season, y = team_fg, group = 1, color = "Opponent FG%")) +
+  geom_line(aes(x = season, y = team_fg, group = 1, color = "Opponent FG%")) + 
+  geom_point(aes(x = season, y = team_3p, group = 1, color = "Opponent 3P%")) +
+  geom_line(aes(x = season, y = team_3p, group = 1, color = "Opponent 3P%")) + 
+  geom_point(aes(x = season, y = team_2p, group = 1, color = "Opponent 2P%")) +
+  geom_line(aes(x = season, y = team_2p, group = 1, color = "Opponent 2P%")) +
+  xlab("Season") + ylab("Percentage") + ggtitle("LA Lakers' Opponent Percentages")
+
+
